@@ -1,0 +1,296 @@
+﻿@model IEnumerable<PetroPayesh.Models.Domain.Tbl_ShoppingCart>
+
+@{
+    ViewBag.Title = "سبد خرید | پتروپایش توسعه ماهان";
+    Layout = "~/Views/Shared/_Index.cshtml";
+    PetroPayesh.Models.Repository.ProductRepo productRepo = new PetroPayesh.Models.Repository.ProductRepo();
+    int totalPrice = 0;
+    string plusID, minesID;
+}
+
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-12 col-lg-8 mt-2">
+            @foreach (var item in Model)
+            {
+                totalPrice = totalPrice + (productRepo.getSingleCartProduct(item.ProductID).Price * item.ProductCount);
+                <div class=" bor-navy rounded py-2 px-2">
+                    <div class="row">
+                        <div class="col-12 col-md-2">
+                            <img src="~/Content/Images/@productRepo.getProductImage(item.ProductID).Image" class="img-grease d-block mx-auto">
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <p class="pt-3 text-center text-md-left">@productRepo.getSingleCartProduct(item.ProductID).Name</p>
+                        </div>
+                        <div class="col-12 col-md-1">
+                            <p class="pt-3 text-center text-md-left">@productRepo.getSingleCartProduct(item.ProductID).Price</p>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="row py-1 justify-content-center float-md-right float-lg-right mr-1 mt-2">
+                                @{
+                                    plusID = "plus" + item.ID.ToString();
+                                    minesID = "mines" + item.ID.ToString();
+                                }
+                                <button class="btn2 mr-1" onclick="addCount(@item.ProductID); btn2(this);"><i class='fas fa-plus pt-1'></i></button>
+                                <input class="input-count text-center " type="text" size="3" id="@item.ID" value="@item.ProductCount">
+                                <button class="btn1 ml-1" onclick="MinesCount(@item.ProductID); btn1(this)"><i class='fas fa-minus pt-1'></i></button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <select class="form-control mt-2" id="selectColor" name="selectColor">
+                                <option value="@item.ProductColorID">@productRepo.getSingleColor(item.ProductColorID).ColorName</option>
+                                @foreach (var ColorItem in productRepo.getColorList(item.ProductID))
+                                {
+                                    if (!ColorItem.ID.Equals(item.ProductColorID))
+                                    {
+                                        <option value="@ColorItem.ID , @item.ID">@ColorItem.ColorName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-1">
+                            <img src="/Content/Images/close.png" onclick="DeleteCount(@item.ID);" class="d-block mx-auto mt-3" style="height:28px;width: 28px ">
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+        <div class="col-12 col-lg-4 mt-2">
+            <div class=" bor-navy rounded  pb-2">
+                <div class="col-12 rounded-top px-2 rounded-top" style="background-color: rgb(23, 44, 66);border-color: rgb(23, 44, 66);">
+                    <h6 class="text-white text-center py-3 ">ثبت نهایی سفارش</h6>
+                </div>
+
+
+
+                <div class="progress mx-2 mt-2" style="height: 1px">
+                    <div class="progress-bar"></div>
+                </div>
+                <div class="row py-3 px-2">
+                    <div class="col-5 col-md-3">
+                        <p class="font-s">مجموع قیمت</p>
+                    </div>
+                    <div class="col-7 col-md-9">
+                        <p style="text-align:center;" id="txtTotalPrice">@totalPrice تومان</p>
+                    </div>
+                </div>
+                <div class="progress mx-2" style="height: 1px">
+                    <div class="progress-bar"></div>
+                </div>
+                <div class="row py-3 px-2">
+                    <div class="col-5 col-md-3">
+                        <p class="font-s">نام و نام خانوادگی</p>
+                    </div>
+                    <div class="col-7 col-md-9">
+                        <input class="form-control font-md" placeholder="نام و نام خانوادگی" id="User_Name" name="User_Name">
+                    </div>
+                </div>
+                <div class="progress mx-2" style="height: 1px">
+                    <div class="progress-bar"></div>
+                </div>
+
+                <div class="row py-3 px-2">
+                    <div class="col-5 col-md-3">
+                        <p class="pt-2 font-s">شماره تلفن</p>
+                    </div>
+                    <div class="col-7 col-md-9">
+                        <input class="form-control font-md" placeholder="شماره تلفن" id="User_Phone" name="User_Phone">
+                    </div>
+                </div>
+                <div class="progress mx-2" style="height: 1px">
+                    <div class="progress-bar"></div>
+                </div>
+
+                <div class="row py-3 px-2">
+                    <div class="col-5 col-md-3">
+                        <p class="pt-5 font-s">آدرس</p>
+                    </div>
+                    <div class="col-7 col-md-9">
+                        <textarea class="form-control font-md" rows="5" id="User_Address" name="User_Address"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="row mx-2">
+                    <button onclick="SaveShoppingCart();" type="button" class="btn btn-navy w-100 ">ثبت نهایی سفارش</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function btn2(tag) {
+        var num1 = $(tag).parent().find(".input-count").val();
+
+        console.log(num1);
+        // var num2=Number(num1);
+        var newNum = parseInt(num1) + 1;
+        $(tag).parent().find(".input-count").val(newNum);
+        // document.getElementById("input-count").value=newNum;
+    }
+    function btn1(tag) {
+        var num1 = $(tag).parent().find(".input-count").val();
+
+        var num2 = Number(num1);
+
+        if (num2 - 1 < 1) {
+            newNum = 1
+        } else {
+            newNum = num2 - 1
+        }
+        $(tag).parent().find(".input-count").val(newNum);
+    }
+</script>
+
+<script>
+    function addCount(productID) {
+        document.body.className = "loading";
+        $.ajax({
+            type: 'POST',
+            dataType: 'Json',
+            url: '@Url.Action("AddCartItemCount", "Home")',
+            data: { ProductID: productID },
+            error: function (err) {
+                alert(err.status);
+            }
+        }).done(function (result) {
+            document.body.className = "";
+            if (result % 2 == 0 || result % 2 == 1) {
+                $('#txtTotalPrice').html(result + 'تومان');
+            } else if (result == 0) {
+                alert("خطایی رخ داده لطفا مجددا تلاش نمایید");
+                window.location.reload(true);
+            } else {
+                alert(result);
+                window.location.reload(true);
+            }
+        });
+    }
+</script>
+
+<script>
+    function MinesCount(productID) {
+        document.body.className = "loading";
+        $.ajax({
+            type: 'POST',
+            dataType: 'Json',
+            url: '@Url.Action("MinesCartItemCount", "Home")',
+            data: { ProductID: productID },
+            error: function (err) {
+                alert(err.status);
+            }
+        }).done(function (result) {
+            document.body.className = "";
+            if (result % 2 == 0 || result % 2 == 1) {
+                $('#txtTotalPrice').html(result + 'تومان');
+            } else if (result == 0) {
+                alert("خطایی رخ داده لطفا مجددا تلاش نمایید");
+                window.location.reload(true);
+            } else {
+                alert(result);
+                window.location.reload(true);
+            }
+        });
+    }
+</script>
+
+<script>
+    function DeleteCount(id) {
+        document.body.className = "loading";
+        $.ajax({
+            type: 'POST',
+            dataType: 'Json',
+            url: '@Url.Action("DeleteCartItem", "Home")',
+            data: { CartItemID: id },
+            error: function (err) {
+                alert(err.status);
+            }
+        }).done(function (result) {
+            document.body.className = "";
+            if (result == 1) {
+                alert("کالا با موفقیت از سبد  خرید شما پاک شد");
+                window.location.reload(true);
+            } else if (result == 0) {
+                alert("خطایی رخ داده لطفا مجددا تلاش نمایید");
+                window.location.reload(true);
+            } else {
+                alert(result);
+                window.location.reload(true);
+            }
+        });
+    }
+</script>
+
+<script>
+    function SaveShoppingCart() {
+        var name = $('#User_Name').val();
+        var address = $('#User_Address').val();
+        var phone = $('#User_Phone').val();
+
+        if (phone == null || phone == "") {
+            alert("باید برای ثبت سفارش ، شماره تلفن را وارد نمایید");
+        } else if (address == null || address == "") {
+            alert("باید برای ثبت سفارش ، آدرس را وارد نمایید");
+        } else if (name == null || name == "") {
+            alert("باید برای ثبت سفارش ، نام و نام خانوادگی خود را وارد نمایید");
+        } else {
+            document.body.className = "loading";
+            $.ajax({
+                type: 'POST',
+                dataType: 'Json',
+                url: '@Url.Action("SaveShoppingCart", "Home")',
+                data: { name: name, phone: phone, address: address},
+                error: function (err) {
+                    alert(err.status);
+                }
+            }).done(function (result) {
+                document.body.className = "";
+                if (result == 1) {
+                    alert("سفارش با موفقیت ثبت شد");
+                    location.replace("http://www.food4me.ir/Home/Index")
+                } else if (result == 0) {
+                    alert("خطایی رخ داده لطفا مجددا تلاش نمایید");
+                    window.location.reload(true);
+                } else {
+                    alert(result);
+                    window.location.reload(true);
+                }
+            });
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('select[name=selectColor]').change(function () {
+            document.body.className = "loading";
+            var color = $(this).val();
+            var myValue = color.split(' , ');
+            var ColorID = myValue[0];
+            var ItemID = myValue[1];
+            $.ajax({
+                type: 'POST',
+                dataType: 'Json',
+                url: '@Url.Action("UpdateCartItemColor", "Home")',
+                data: { colorID: ColorID, ID: ItemID },
+                error: function (err) {
+                    alert(err.status);
+                }
+            }).done(function (result) {
+                document.body.className = "";
+                if (result == 1) {
+                    alert("رنگ با موفقیت ویرایش شد");
+                } else if (result == 0) {
+                    alert("خطایی رخ داده لطفا مجددا تلاش نمایید");
+                    window.location.reload(true);
+                } else {
+                    alert(result);
+                    window.location.reload(true);
+                }
+            });
+        });
+    });
+</script>

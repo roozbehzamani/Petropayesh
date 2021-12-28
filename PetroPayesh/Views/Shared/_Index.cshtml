@@ -1,0 +1,197 @@
+﻿
+@{
+    Layout = null;
+    PetroPayesh.Models.Repository.ProductRepo productRepo = new PetroPayesh.Models.Repository.ProductRepo();
+}
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>@ViewBag.Title</title>
+
+    <meta name="description" content="@ViewBag.MetaDescription">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="ROBOTS" CONTENT="INDEX,FOLLOW">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="~/Content/CSS/bootstrap.css">
+    <link rel="stylesheet" href="~/Content/CSS/bootstrap-reboot.css">
+    <link rel="stylesheet" href="~/Content/CSS/style.css">
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+    <link rel="stylesheet" href="~/Content/CSS/mmenu-light.css">
+
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+
+</head>
+<body>
+    <style>
+        .loading-bar {
+            display: none;
+            position: fixed;
+            z-index: 999999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('../../Content/Images/Double Ring-1s-200px.gif');
+            background-position: 50% 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+            background-repeat: no-repeat;
+        }
+
+        body.loading {
+            overflow: hidden;
+        }
+
+            body.loading .loading-bar {
+                display: block;
+            }
+    </style>
+    <div class="loading-bar">
+    </div>
+    <!--------menu-------->
+    <div class="container">
+        <div class="row">
+            <div class="col-7 col-md-3  order-xl-first order-last">
+                <img src="/Content/Images/payesh_nav_logo.png" class="img-fluid mt-2">
+            </div>
+            <div class="col-5 col-md-9  order-xl-last order-first">
+                <nav class="navbar navbar-expand-md navbar-light d-none d-xl-block">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mynavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse pt-4" id="mynavbar">
+                        <ul class="navbar-nav">
+                            <a href="~/Home/Index" class="nav-link  mr-1"><h6 class="text-dark ">خانه</h6></a>
+                            <li class="nav_item">
+                                <a href="~/Home/Agencies" class="nav-link mx-1 "><h6 class="text-dark ">نمایندکی ها</h6></a>
+                            </li>
+
+                            <li class="nav_item">
+                                <a href="~/Home/Gallery" class="nav-link mx-1 "><h6 class="text-dark ">گالری</h6></a>
+                            </li>
+                            <li class="nav_item">
+                                <a href="~/Home/Documents" class="nav-link mx-1 "><h6 class="text-dark ">گواهینامه ها</h6></a>
+                            </li>
+                            <li class="nav_item ">
+                                <a href="~/Home/ContactUs" class="nav-link mx-1"><h6 class="text-dark ">تماس با ما</h6></a>
+                            </li>
+                            @if (!Session["Count"].ToString().Equals("0"))
+                            {
+                                <li class="nav_item">
+                                    <a href="~/Home/ShoppingCart" class="nav-link mx-1"><h6 class="text-dark ">سبد خرید( @Session["Count"].ToString() )</h6></a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </nav>
+                <a href="#my-menu" class=" rounded mx-md-5 mx-3 d-xl-none"><img src="/Content/Images/open-menu%20(2).png" class="mt-3 pt-lg-3 mt-md-2 pt-md-1"></a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="progress" style="height: 2px">
+        <div class="progress-bar" style="background-color: #161e2e"></div>
+    </div>
+
+    @RenderBody()
+
+    <!-----------------footer----------------------->
+    <div class="container-fluid mt-5 py-3 px-0" style="background-color: #172c42">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-4 mt-2">
+                    <img src="/Content/Images/petro-logo-footer.png" class="img-fluid d-block mx-auto mx-lg-0 mx-md-0" style="width: 65px;height: 65px">
+                </div>
+                <div class="col-12 col-md-4 mt-2">
+                    <p class="text-center text-white pt-3">کلیه حقوق سایت برای شرکت پتروپایش توسعه محفوظ است</p>
+                </div>
+                <div class="col-12 col-md-4 mt-2">
+                    <p class="text-lg-right text-md-right text-center text-white pt-3">32754135 - 044</p>
+                </div>
+            </div>
+        </div>
+        <div class="progress mt-2" style="height: 1px">
+            <div class="progress-bar"></div>
+        </div>
+
+        <div class="container">
+            <div class="row pt-5">
+                <div class="col-12 col-md-8">
+                    <h6 class="text-white"> درباره پترو پایش توسعه ماهان:</h6>
+                    <p class="pt-2 text-white">
+                        این شرکت در سال 1398 تاسیس شده و دارای گرید های مختلفی از جمله گرید اول و گرید دوم و نیز
+
+                        در زمینه تولید فلان و فلان تا کنون تنها شرکت فعال در ایران میباشد
+                    </p>
+                </div>
+                <div class="col-12 col-md-4">
+                    <img src="/Content/Images/enamad-logo.png" class="img-fluid float-lg-right float-md-right d-block mx-auto ">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!------menu mobile----->
+    <nav id="menu" class="d-xl-none">
+        <ul>
+            <li><a href="/Home/Index">خانه</a></li>
+            <li><a href="/Home/Agencies">نمایندکی ها</a></li>
+            <li><a href="/Home/Gallery">گالری</a></li>
+            <li><a href="/Home/Documents">گواهینامه ها</a></li>
+            <li><a href="/Home/ContactUs">تماس با ما</a></li>
+            @if (!Session["Count"].ToString().Equals("0"))
+            {
+                <li><a href="/Home/ShoppingCart">سبد خرید( @Session["Count"].ToString() )</a></li>
+            }
+            <li>
+                <span>محصولات</span>
+                <ul>
+                    @foreach (var item in productRepo.getAllProductListNotAsync())
+                    {
+                        <li><a href="~/Home/ProductSingle/@item.ID">@item.Name</a></li>
+                    }
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-----menu mobile right---->
+    <!--javascript-->
+    
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/mmenu-light.js"></script>
+    <script src="~/Scripts/custom-js.js"></script>
+    <script>
+        document.addEventListener(
+            "DOMContentLoaded", () => {
+                const menu = new MmenuLight(
+                    document.querySelector("#menu")
+                    , {
+                        title: 'منو'
+                    }
+                );
+
+                menu.enable("(max-width:1200px)");
+                // const navigator = menu.navigation();
+                menu.offcanvas({
+                    position: 'right'
+                });
+
+                document.querySelector('a[href="#my-menu"]')
+                    .addEventListener('click', (evnt) => {
+                        evnt.preventDefault();
+                        menu.open();
+                    });
+            }
+        );
+
+    </script>
+
+</body>
+</html>

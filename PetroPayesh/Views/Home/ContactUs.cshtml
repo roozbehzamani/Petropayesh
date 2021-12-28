@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "تماس با ما | پتروپایش توسعه ماهان";
+    ViewBag.MetaDescription = " شرکت پترو پایس توسعه ماهان به عنوان اولین شرکت تخصصی در زمینه گریس پمپ در ایران همه روزه پاسخگوی سوالات شما عزیزان است";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<!--end-breadcrumbs-->
+<!--contact-start-->
+<div class="container mt-5">
+    <div class="row mt-4">
+        <div class="col-12 col-lg-3 mt-2">
+            <h6 class="navy-blue">آدرس</h6>
+            <p class="pt-2">
+                خیابان خاتم الانبیا،
+                غرفه 24،
+                مجتمع فلزکاران.
+            </p>
+
+            <h6 class="navy-blue mt-5">اطلاعات تماسی</h6>
+            <p class="pt-2">تلفن : 32754135 - 044</p>
+            <p class="pt-2">موبایل : 09143888219</p>
+            <p class="pt-2">فکس : 32754135 - 044</p>
+            <p class="pt-2">ایمیل : PetroPayeshToseh@gmail.com</p>
+
+
+        </div>
+        <div class="col-12 col-lg-9 mt-2">
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    <form>
+                        <div class="input-group restaurant-registration mb-3 mt-2">
+                            <input type="text" class="form-control font-md bor-navy" placeholder="نام و نام خانوادگی" id="User_Name" name="User_Name">
+                        </div>
+                    </form>
+                </div>
+                <div class="col-12 col-md-4">
+                    <form>
+                        <div class="input-group restaurant-registration mb-3 mt-2">
+                            <input type="text" class="form-control font-md bor-navy" placeholder="شماره تلفن" id="User_Phone" name="User_Phone">
+                        </div>
+                    </form>
+                </div>
+                <div class="col-12 col-md-4">
+                    <form>
+                        <div class="input-group restaurant-registration mb-3 mt-2">
+                            <input type="text" class="form-control font-md bor-navy" placeholder="ایمیل" id="User_Email" name="User_Email">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            <form>
+                <div class="input-group restaurant-registration mb-3 mt-2">
+                    <textarea type="text" class="form-control font-md bor-navy" rows="8" placeholder="متن پیام..." id="User_Message" name="User_Message"></textarea>
+                </div>
+            </form>
+
+
+            <button type="button" class="btn btn-outline-navy w-100" onclick="mySaveMessage();">ارسال پیام</button>
+        </div>
+    </div>
+</div>
+
+
+<!------map------>
+<div class="container mt-4">
+    <div class="map" style=" border: 1px solid rgb(23, 44, 66);border-radius: 10px;margin: auto;padding: 20px;height: 300px;">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3161.6845916007355!2d45.07093161531227!3d37.586044179794186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzfCsDM1JzA5LjgiTiA0NcKwMDQnMjMuMiJF!5e0!3m2!1sen!2sin!4v1560335875848!5m2!1sen!2sin" style="border:0;height: 260px;width: 100%" allowfullscreen></iframe>
+    </div>
+</div>
+
+
+<script>
+    function mySaveMessage() {
+        var name = $('#User_Name').val();
+        var email = $('#User_Email').val();
+        var phone = $('#User_Phone').val();
+        var message = $('#User_Message').val();
+
+        if (phone == null || phone == "") {
+            alert("باید برای ارسال پیام ، شماره تلفن را وارد نمایید");
+        } else if (message == null || message == "") {
+            alert("باید برای ارسال پیام ، متن پیام را وارد نمایید");
+        } else if (name == null || name == "") {
+            alert("باید برای ارسال پیام ، نام و نام خانوادگی خود را وارد نمایید");
+        } else if (email == null || email == "") {
+            alert("باید برای ارسال پیام ، ایمیل خود را وارد نمایید");
+        } else {
+            $.ajax({
+                type: 'POST',
+                dataType: 'Json',
+                url: '@Url.Action("SaveMessage", "Home")',
+                data: { name: name, email: email, phone: phone, message: message},
+                error: function (err) {
+                    alert(err.status);
+                }
+            }).done(function (result) {
+                if (result == 1) {
+                    alert("پیام با موفقیت ارسال شد");
+                    window.location.reload(true);
+                } else if (result == 0) {
+                    alert("خطایی رخ داده لطفا مجددا تلاش نمایید");
+                } else {
+                    alert(result)
+                }
+            });
+        }
+    }
+</script>

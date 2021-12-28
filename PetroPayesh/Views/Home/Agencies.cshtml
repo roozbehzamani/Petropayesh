@@ -1,0 +1,76 @@
+﻿@model IEnumerable<PetroPayesh.Models.Domain.Tbl_Representations>
+
+@{
+    ViewBag.Title = "لیست نمایندگی ها | پتروپایش توسعه ماهان";
+    ViewBag.MetaDescription = "آخرین لیست تمایندگی های معتبر گریس پمپ دستی میکادو در ایران";
+    Layout = "~/Views/Shared/_Index.cshtml";
+    int counter = 1;
+    int counter1 = 1;
+}
+
+<!-------table------->
+<div class="container mt-5">
+    <div class="row text-center">
+        <div class="col-md-12">
+            <table class="table table-bordered table-one">
+                <thead>
+                    <tr style="background:rgb(23, 44, 66); color:white;">
+                        <th width="10" class="headerSort" tabindex="0" role="columnheader button" title="Sort descending">شماره</th>
+                        <th width="50" class="headerSort" tabindex="0" role="columnheader button" title="Sort ascending">نام نمایندگی</th>
+                        <th width="50" class="headerSort" tabindex="0" role="columnheader button" title="Sort ascending">نام مسئول</th>
+                        <th width="70" class="headerSort" tabindex="0" role="columnheader button" title="Sort ascending">تلفن</th>
+                        <th width="300" class="headerSort" tabindex="0" role="columnheader button" title="Sort ascending">آدرس</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><span>@counter</span></td>
+                            <td>@item.Name</td>
+                            <td>@item.Owner</td>
+                            <td><a href="tel:@item.Phone">@item.Phone</a></td>
+                            <td>@item.Address</td>
+                        </tr>
+
+                        counter++;
+                    }
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+
+
+            <table class="table table-bordered d-md-none">
+                <thead>
+                    <tr style="background:rgb(23, 44, 66); color:white;">
+                        <th width="10" class="headerSort" tabindex="0" role="columnheader button" title="Sort descending">شماره</th>
+                        <th width="50" class="headerSort" tabindex="0" role="columnheader button" title="Sort ascending">نام نمایندگی</th>
+                        <th width="70" class="headerSort" tabindex="0" role="columnheader button" title="Sort ascending">تلفن</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><span>@counter1</span></td>
+                            <td>@item.Name</td>
+                            <td><a href="tel:@item.Phone">@item.Phone</a></td>
+                        </tr>
+
+                        counter1++;
+                    }
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/lrStickyHeader.js"></script>
+<script>
+    var tables = document.getElementsByTagName('table');
+    lrStickyHeader(tables[0]);
+    lrStickyHeader(tables[1]);
+    lrStickyHeader(tables[2], { parent: document.getElementById('scrollPanel') });
+</script>

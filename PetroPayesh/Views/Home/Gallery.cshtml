@@ -1,0 +1,76 @@
+﻿@model IEnumerable<PetroPayesh.Models.Domain.Tbl_Gallery>
+
+@{
+    ViewBag.Title = "گالری نصاویر و ویدیوها | پتروپایش توسعه ماهان";
+    ViewBag.MetaDescription = "تصاویر و ویدیو گریس پمپ دستی میکادو|تصاویر تیم فنی، کارگاه، ابزارآلات و ... |طرز کار گریس پمپ دستی  ";
+    Layout = "~/Views/Shared/_Index.cshtml";
+    PetroPayesh.Models.Repository.GalleryRepo galleryRepo = new PetroPayesh.Models.Repository.GalleryRepo();
+}
+
+<!-------image gallery--------->
+<div class="container-fluid mt-2" style="background-color: #edeeed;border-top: 1px solid #ddd;">
+    <div class="container">
+        <div class="row py-2">
+            <div class=" col-md-2 ">
+                <img src="/Content/Images/photo-gallery-461706.png" class=" mx-auto img-fluid img-setting d-md-block d-lg-block d-none">
+            </div>
+            <div class="col-12 col-md-8">
+                <h3 class="text-center pt-3">گالری تصاویر</h3>
+            </div>
+            <div class=" col-md-2 ">
+                <img src="/Content/Images/photo-gallery-461706.png" class=" mx-auto img-fluid img-setting  d-md-block d-lg-block d-none">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-12 col-md-6 col-lg-3 mt-3">
+                <div class="hovereffect">
+                    <img src="/Content/Images/@item.Image" alt="@item.Description" class="img-fluid">
+                    <div class="overlay">
+                        <h2>@item.Name</h2>
+                        <a class="info">@item.Description</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<!-------video gallery--------->
+<div class="container-fluid mt-4" style="background-color: #edeeed;border-top: 1px solid #ddd;">
+    <div class="container">
+        <div class="row py-2">
+            <div class=" col-md-2 ">
+                <img src="/Content/Images/samsung-video-library_icon.png" class=" mx-auto img-fluid img-setting d-md-block d-lg-block d-none">
+            </div>
+            <div class="col-12 col-md-8">
+                <h3 class="text-center pt-3">گالری ویدیو</h3>
+            </div>
+            <div class=" col-md-2 ">
+                <img src="/Content/Images/samsung-video-library_icon.png" class=" mx-auto img-fluid img-setting  d-md-block d-lg-block d-none">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        @foreach (var item in galleryRepo.getVideosList())
+        {
+            <div class="col-12 col-md-6 col-lg-3 mt-3">
+                <video controls class="embed-responsive">
+                    <source src="/Content/Videos/@item.Video" type="video/mp4">
+                    <source src="/Content/Videos/@item.Video" type="video/ogg">
+                </video>
+
+                <p class="text-center pt-2">@item.Name</p>
+            </div>
+        }
+    </div>
+</div>
